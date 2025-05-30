@@ -2,31 +2,33 @@
 
 A modern, user-friendly platform for managing cryptocurrency trading bots and wallet interactions. Built with Next.js, TypeScript, and Web3 technologies.
 
+> **Note:** This is a demonstration platform that uses mock data. All trading data, wallet balances, and transactions are simulated for development and testing purposes.
+
 ## Features
 
 - 🔐 **Multiple Authentication Methods**
-  - MetaMask Wallet Integration
-  - WalletConnect Support
-  - Email/Password Login
-  - Guest Mode Access
+  - MetaMask Wallet Integration (Demo Mode)
+  - WalletConnect Support (Coming Soon)
+  - Email/Password Login (Demo Mode)
+  - Guest Mode Access (Mock Data)
 
 - 💼 **Wallet Management**
-  - Real-time balance tracking
-  - Transaction history
-  - Multiple wallet support
-  - Deposit/Withdraw functionality
+  - Simulated balance tracking
+  - Mock transaction history
+  - Demo wallet support
+  - Simulated deposit/withdraw functionality
 
 - 🤖 **Trading Bot Integration**
-  - Pre-built trading strategies
-  - Custom strategy creation
-  - Performance analytics
-  - Real-time monitoring
+  - Demo trading strategies
+  - Mock performance data
+  - Simulated trading activities
+  - Demo monitoring interface
 
 - 📊 **Analytics Dashboard**
-  - Portfolio overview
-  - Performance metrics
-  - Trading history
-  - Custom reports
+  - Mock portfolio overview
+  - Simulated performance metrics
+  - Demo trading history
+  - Sample reports
 
 ## Tech Stack
 
@@ -35,8 +37,8 @@ A modern, user-friendly platform for managing cryptocurrency trading bots and wa
 - **Styling:** Tailwind CSS
 - **UI Components:** shadcn/ui
 - **State Management:** React Context
-- **Web3 Integration:** MetaMask, WalletConnect
-- **Authentication:** Custom Web3 Auth
+- **Web3 Integration:** MetaMask (Demo Mode), WalletConnect (Coming Soon)
+- **Authentication:** Custom Web3 Auth (Demo)
 - **Notifications:** Sonner
 
 ## Getting Started
@@ -45,7 +47,7 @@ A modern, user-friendly platform for managing cryptocurrency trading bots and wa
 
 - Node.js 18+ 
 - pnpm (recommended) or npm
-- MetaMask browser extension (for wallet features)
+- MetaMask browser extension (optional, for demo wallet features)
 
 ### Installation
 
@@ -60,7 +62,7 @@ cd web3-trading-platform
 pnpm install
 ```
 
-3. Create a `.env.local` file in the root directory and add your environment variables:
+3. Create a `.env.local` file in the root directory and add your environment variables (optional for demo):
 ```env
 NEXT_PUBLIC_INFURA_ID=your_infura_id
 NEXT_PUBLIC_ALCHEMY_ID=your_alchemy_id
@@ -78,12 +80,12 @@ pnpm dev
 ```
 web3-trading-platform/
 ├── app/                    # Next.js app directory
-│   ├── dashboard/         # Dashboard pages
+│   ├── dashboard/         # Dashboard pages (Mock Data)
 │   ├── login/            # Authentication pages
 │   └── page.tsx          # Home page
 ├── components/            # React components
 │   ├── ui/               # UI components
-│   └── wallet-provider.tsx # Web3 wallet context
+│   └── wallet-provider.tsx # Web3 wallet context (Demo Mode)
 ├── hooks/                # Custom React hooks
 ├── lib/                  # Utility functions
 ├── public/              # Static assets
@@ -110,10 +112,10 @@ web3-trading-platform/
 
 ## Security
 
-- All sensitive operations require wallet authentication
-- Guest mode is available for demo purposes
-- API keys are stored securely
-- Regular security audits are performed
+- All sensitive operations are simulated in demo mode
+- Guest mode uses mock data for demonstration
+- No real API keys or sensitive data are used
+- Platform is for development and testing purposes only
 
 ## License
 
