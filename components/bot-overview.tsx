@@ -1,28 +1,31 @@
 "use client"
 
 import { useState } from "react"
+import { Bot, Pause, Play, Settings } from "lucide-react"
+import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
-import { ArrowUpDown, Bot, Play, Settings, CircleStopIcon as Stop } from "lucide-react"
-import { toast } from "sonner"
+import { cn } from "@/lib/utils"
+
+type BotStatus = "active" | "paused" | "stopped"
 
 type TradingBot = {
   id: string
   name: string
   algorithm: string
-  status: "active" | "paused" | "stopped"
+  status: BotStatus
   profit: number
   trades: number
   pairs: string[]
 }
 
-const bots: TradingBot[] = [
+// Sample bots (demo data).
+const initialBots: TradingBot[] = [
   {
     id: "bot-1",
     name: "BTC Momentum",
-    algorithm: "Momentum Strategy",
+    algorithm: "Momentum",
     status: "active",
     profit: 345.67,
     trades: 28,
@@ -31,7 +34,7 @@ const bots: TradingBot[] = [
   {
     id: "bot-2",
     name: "ETH Swing",
-    algorithm: "Swing Trading",
+    algorithm: "Swing trading",
     status: "paused",
     profit: -23.45,
     trades: 12,
@@ -40,7 +43,7 @@ const bots: TradingBot[] = [
   {
     id: "bot-3",
     name: "Multi-Pair DCA",
-    algorithm: "Dollar Cost Averaging",
+    algorithm: "Dollar cost averaging",
     status: "stopped",
     profit: 567.89,
     trades: 45,
@@ -48,100 +51,95 @@ const bots: TradingBot[] = [
   },
 ]
 
-export function BotOverview() {
-  const [tradingBots, setTradingBots] = useState<TradingBot[]>(bots)
+const statusLabel: Record<BotStatus, string> = { active: "Running", paused: "Paused", stopped: "Stopped" }
 
-  const toggleBotStatus = (botId: string) => {
-    setTradingBots((bots) =>
-      bots.map((bot) => {
-        if (bot.id === botId) {
-          const newStatus = bot.status === "active" ? "paused" : "active"
-          toast.success(`Bot ${bot.name} ${newStatus === "active" ? "activated" : "paused"}`)
-          return { ...bot, status: newStatus }
-        }
-        return bot
+export function BotOverview({ filter = "all" }: { filter?: "all" | BotStatus }) {
+  const [bots, setBots] = useState<TradingBot[]>(initialBots)
+
+  const toggle = (id: string) => {
+    setBots((list) =>
+      list.map((bot) => {
+        if (bot.id !== id) return bot
+        const status: BotStatus = bot.status === "active" ? "paused" : "active"
+        toast.success(`${bot.name} ${status === "active" ? "started" : "paused"}`)
+        return { ...bot, status }
       }),
     )
   }
 
+  const visible = filter === "all" ? bots : bots.filter((b) => b.status === filter)
+
+  if (visible.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed p-8 text-center">
+        <Bot className="mx-auto h-6 w-6 text-muted-foreground" strokeWidth={1.75} />
+        <p className="mt-3 font-medium">No {filter} bots</p>
+        <p className="mt-1 text-sm text-muted-foreground">Bots you {filter === "paused" ? "pause" : "start"} will show up here.</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="space-y-4">
-      {tradingBots.map((bot) => (
-        <Card key={bot.id}>
-          <CardContent className="p-4">
-            <div className="flex flex-col space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Bot className="h-4 w-4" />
-                  <span className="font-medium">{bot.name}</span>
-                  <Badge
-                    variant={bot.status === "active" ? "default" : bot.status === "paused" ? "outline" : "secondary"}
-                  >
-                    {bot.status}
-                  </Badge>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Switch checked={bot.status === "active"} onCheckedChange={() => toggleBotStatus(bot.id)} />
-                  <Button variant="ghost" size="icon">
-                    <Settings className="h-4 w-4" />
-                    <span className="sr-only">Bot settings</span>
-                  </Button>
-                </div>
+    <ul className="grid gap-3">
+      {visible.map((bot) => (
+        <li key={bot.id} className="rounded-lg border bg-card p-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <p className="truncate font-medium">{bot.name}</p>
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    bot.status === "active" && "border-brand-ink/40 text-brand-ink",
+                    bot.status !== "active" && "text-muted-foreground",
+                  )}
+                >
+                  {statusLabel[bot.status]}
+                </Badge>
               </div>
-
-              <div className="grid grid-cols-3 gap-4 text-sm">
-                <div>
-                  <p className="text-muted-foreground">Algorithm</p>
-                  <p>{bot.algorithm}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Profit</p>
-                  <p className={bot.profit >= 0 ? "text-green-500" : "text-red-500"}>
-                    {bot.profit >= 0 ? "+" : ""}
-                    {bot.profit.toFixed(2)} USDT
-                  </p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Trades</p>
-                  <p>{bot.trades}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-1">
-                {bot.pairs.map((pair) => (
-                  <Badge key={pair} variant="outline" className="text-xs">
-                    {pair}
-                  </Badge>
-                ))}
-              </div>
-
-              <div className="flex gap-2 mt-2">
-                {bot.status === "active" ? (
-                  <Button variant="outline" size="sm" className="w-full" onClick={() => toggleBotStatus(bot.id)}>
-                    <Stop className="mr-2 h-3 w-3" />
-                    Pause Bot
-                  </Button>
-                ) : (
-                  <Button variant="outline" size="sm" className="w-full" onClick={() => toggleBotStatus(bot.id)}>
-                    <Play className="mr-2 h-3 w-3" />
-                    Start Bot
-                  </Button>
-                )}
-                <Button variant="outline" size="sm" className="w-full">
-                  <ArrowUpDown className="mr-2 h-3 w-3" />
-                  View Trades
-                </Button>
-              </div>
+              <p className="mt-0.5 text-sm text-muted-foreground">{bot.algorithm}</p>
             </div>
-          </CardContent>
-        </Card>
-      ))}
+            <div className="flex items-center gap-1">
+              <Switch
+                checked={bot.status === "active"}
+                onCheckedChange={() => toggle(bot.id)}
+                aria-label={`${bot.status === "active" ? "Pause" : "Start"} ${bot.name}`}
+              />
+              <Button variant="ghost" size="icon" className="h-8 w-8" aria-label={`${bot.name} settings`}>
+                <Settings strokeWidth={1.75} />
+              </Button>
+            </div>
+          </div>
 
-      <Button className="w-full">
-        <Bot className="mr-2 h-4 w-4" />
-        Create New Bot
-      </Button>
-    </div>
+          <dl className="mt-4 grid grid-cols-3 gap-4 text-sm">
+            <div>
+              <dt className="text-xs text-muted-foreground">Profit</dt>
+              <dd className={cn("mt-0.5 font-mono tabular", bot.profit >= 0 ? "text-gain" : "text-loss")}>
+                {bot.profit >= 0 ? "+" : ""}
+                {bot.profit.toFixed(2)}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted-foreground">Trades</dt>
+              <dd className="mt-0.5 font-mono tabular">{bot.trades}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted-foreground">Pairs</dt>
+              <dd className="mt-0.5 truncate font-mono text-[13px]">{bot.pairs.join(", ")}</dd>
+            </div>
+          </dl>
+
+          <div className="mt-4 flex gap-2">
+            <Button variant="outline" size="sm" className="flex-1" onClick={() => toggle(bot.id)}>
+              {bot.status === "active" ? <Pause /> : <Play />}
+              {bot.status === "active" ? "Pause" : "Start"}
+            </Button>
+            <Button variant="ghost" size="sm" className="flex-1">
+              View trades
+            </Button>
+          </div>
+        </li>
+      ))}
+    </ul>
   )
 }
-

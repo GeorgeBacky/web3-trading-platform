@@ -1,737 +1,323 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import Image from "next/image"
 import Link from "next/link"
-import {
-  ArrowRight,
-  Bot,
-  LineChart,
-  Wallet,
-  Zap,
-  TrendingUp,
-  Shield,
-  Code,
-  ChevronRight,
-  Star,
-  CheckCircle2,
-} from "lucide-react"
+import { ArrowRight, KeyRound, Link2, LockKeyhole, Rocket, SlidersHorizontal } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Logo } from "@/components/brand/logo"
+import { SiteHeader } from "@/components/landing/site-header"
+import { HeroCopy } from "@/components/landing/hero-copy"
+import { HeroPreview } from "@/components/landing/hero-preview"
+import { Reveal } from "@/components/landing/reveal"
+import { StrategyExplorer } from "@/components/landing/strategy-explorer"
+import { cn } from "@/lib/utils"
+
+const networks = [
+  { slug: "ethereum", name: "Ethereum" },
+  { slug: "bitcoin", name: "Bitcoin" },
+  { slug: "solana", name: "Solana" },
+  { slug: "polygon", name: "Polygon" },
+  { slug: "optimism", name: "Optimism" },
+  { slug: "chainlink", name: "Chainlink" },
+  { slug: "tether", name: "Tether" },
+  { slug: "binance", name: "Binance" },
+  { slug: "walletconnect", name: "WalletConnect" },
+]
+
+const steps = [
+  {
+    icon: Link2,
+    title: "Connect",
+    body: "Sign in with MetaMask or any browser wallet. Your keys stay in the extension.",
+  },
+  {
+    icon: SlidersHorizontal,
+    title: "Choose",
+    body: "Pick a pre-built QuantConnect algorithm or bring your own, then set pairs and risk limits.",
+  },
+  {
+    icon: Rocket,
+    title: "Launch",
+    body: "Start the bot and follow each fill, balance change, and return figure as it happens.",
+  },
+]
+
+
+
+function SectionHeading({ eyebrow, title, body }: { eyebrow?: string; title: string; body?: string }) {
+  return (
+    <div className="max-w-2xl">
+      {eyebrow && <p className="mb-4 text-sm font-medium text-brand-ink">{eyebrow}</p>}
+      <h2 className="text-3xl font-semibold leading-[1.08] tracking-tight md:text-[2.75rem]">{title}</h2>
+      {body && <p className="mt-4 max-w-[60ch] text-lg leading-relaxed text-muted-foreground">{body}</p>}
+    </div>
+  )
+}
+
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2 font-bold text-xl">
-            <Bot className="h-6 w-6 text-primary" />
-            <span>InfluxLabs</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="#features" className="text-sm font-medium hover:text-primary transition-colors">
-              Features
-            </Link>
-            <Link href="#how-it-works" className="text-sm font-medium hover:text-primary transition-colors">
-              How It Works
-            </Link>
-            <Link href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
-              Pricing
-            </Link>
-            <Link href="#testimonials" className="text-sm font-medium hover:text-primary transition-colors">
-              Testimonials
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <Link href="/login">
-              <Button variant="ghost">Login</Button>
-            </Link>
-            <Link href="/register">
-              <Button className="gradient-bg hover:opacity-90 transition-opacity">Get Started</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+    <div className="flex min-h-[100dvh] flex-col">
+      <SiteHeader />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 hero-pattern relative overflow-hidden">
-          <div className="container px-4 md:px-6 relative z-10">
-            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary mb-4">
-                    Web3 Trading Platform
-                  </div>
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-                    <span className="gradient-text">Algorithmic Trading</span> Made Simple
-                  </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Deploy, manage, and monitor your cryptocurrency trading bots with our intuitive platform. Seamlessly
-                    integrate with QuantConnect algorithms.
+        {/* Hero */}
+        <section className="relative overflow-hidden">
+          <div className="tile-grid absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
+          <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 pb-20 pt-14 sm:px-6 md:pt-20 lg:min-h-[calc(100dvh-4rem)] lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-8 lg:pb-24">
+            <HeroCopy />
+            <HeroPreview />
+          </div>
+        </section>
+
+        {/* Networks and assets */}
+        <section className="border-y bg-secondary/40 py-8" aria-label="Supported networks and assets">
+          <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
+            <div className="animate-marquee flex w-max gap-16 pr-16">
+              {[...networks, ...networks].map((n, i) => (
+                <span
+                  key={`${n.slug}-${i}`}
+                  role="img"
+                  aria-label={i < networks.length ? n.name : undefined}
+                  aria-hidden={i >= networks.length ? true : undefined}
+                  className="mask-logo block h-7 w-7 text-muted-foreground"
+                  style={{ ["--logo" as string]: `url(https://cdn.simpleicons.org/${n.slug})` }}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section id="features" className="scroll-mt-16 py-24 md:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal>
+              <SectionHeading eyebrow="Features" title="One place to run, watch, and tune your bots." />
+            </Reveal>
+
+            <div className="mt-14 grid gap-4 md:grid-cols-6">
+              <Reveal className="flex min-h-[260px] flex-col justify-between rounded-lg bg-brand p-7 text-brand-foreground md:col-span-2">
+                <KeyRound className="h-7 w-7" strokeWidth={1.5} />
+                <div>
+                  <h3 className="text-xl font-semibold tracking-tight">Wallet sign-in</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed opacity-80">
+                    MetaMask and any browser wallet that supports EIP-6963. No passwords to leak.
                   </p>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/register">
-                    <Button size="lg" className="gradient-bg hover:opacity-90 transition-opacity gap-1">
-                      Start Trading <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link href="#how-it-works">
-                    <Button size="lg" variant="outline">
-                      Learn More
-                    </Button>
-                  </Link>
-                </div>
-                <div className="flex items-center gap-4 mt-6">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="inline-block h-8 w-8 rounded-full border-2 border-background bg-muted overflow-hidden"
+              </Reveal>
+
+              <Reveal delay={0.06} className="tile-grid relative flex min-h-[260px] flex-col justify-between overflow-hidden rounded-lg border p-7 md:col-span-4">
+                <div className="flex flex-wrap gap-2">
+                  {["Momentum", "Mean reversion", "Dollar cost averaging", "Breakout", "Grid", "Your own algorithm"].map(
+                    (s, i) => (
+                      <span
+                        key={s}
+                        className={cn(
+                          "rounded-sm border bg-background px-3 py-1.5 font-mono text-[13px]",
+                          i === 5 && "border-dashed text-muted-foreground",
+                        )}
                       >
-                        <div className="h-full w-full bg-primary/20"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    <span className="font-medium">1,200+</span> traders already using InfluxLabs
-                  </div>
+                        {s}
+                      </span>
+                    ),
+                  )}
                 </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="relative w-full max-w-[500px] aspect-square">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 backdrop-blur-sm animate-pulse-slow"></div>
-                  <div className="absolute inset-4 rounded-xl border border-primary/20 bg-background/80 backdrop-blur-md shadow-xl overflow-hidden">
-                    <div className="p-6 h-full flex flex-col">
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-2">
-                          <Bot className="h-5 w-5 text-primary" />
-                          <span className="font-semibold">Trading Dashboard</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                          <span className="text-xs text-muted-foreground">Live</span>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 mb-6">
-                        <div className="rounded-lg bg-muted p-4">
-                          <div className="text-xs text-muted-foreground mb-1">Portfolio Value</div>
-                          <div className="text-xl font-bold">$45,231.89</div>
-                          <div className="text-xs text-green-500">+12.5%</div>
-                        </div>
-                        <div className="rounded-lg bg-muted p-4">
-                          <div className="text-xs text-muted-foreground mb-1">Active Bots</div>
-                          <div className="text-xl font-bold">3</div>
-                          <div className="text-xs text-green-500">All running</div>
-                        </div>
-                      </div>
-                      <div className="flex-1 rounded-lg bg-muted p-4 mb-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="text-xs text-muted-foreground">Performance</div>
-                          <div className="text-xs text-primary">Last 30 days</div>
-                        </div>
-                        <div className="h-24 flex items-end gap-1">
-                          {[30, 45, 25, 60, 35, 50, 40, 55, 45, 60, 75, 65].map((height, i) => (
-                            <div
-                              key={i}
-                              className="flex-1 bg-primary/20 rounded-t-sm"
-                              style={{ height: `${height}%` }}
-                            ></div>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button size="sm" className="flex-1 gradient-bg hover:opacity-90 transition-opacity">
-                          <Zap className="h-3 w-3 mr-1" /> New Bot
-                        </Button>
-                        <Button size="sm" variant="outline" className="flex-1">
-                          <LineChart className="h-3 w-3 mr-1" /> Analytics
-                        </Button>
-                      </div>
+                <div className="mt-10 max-w-md rounded-md bg-background/90 py-1">
+                  <h3 className="text-xl font-semibold tracking-tight">QuantConnect trading bots</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                    Turn any QuantConnect algorithm into a bot. Set pairs, position size, and limits per strategy.
+                  </p>
+                </div>
+              </Reveal>
+
+              <Reveal className="flex min-h-[240px] flex-col justify-between rounded-lg border bg-card p-7 md:col-span-3">
+                <dl className="grid grid-cols-3 gap-4">
+                  {[
+                    ["Return", "+24.5%"],
+                    ["Win rate", "68%"],
+                    ["Profit factor", "1.85"],
+                  ].map(([k, v]) => (
+                    <div key={k}>
+                      <dt className="text-xs text-muted-foreground">{k}</dt>
+                      <dd className="mt-1 font-mono text-2xl font-medium tracking-tight tabular">{v}</dd>
                     </div>
-                  </div>
+                  ))}
+                </dl>
+                <div>
+                  <h3 className="mt-8 text-xl font-semibold tracking-tight">Analytics that answer questions</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                    Profit, drawdown, and win rate for each bot. Figures above are sample data.
+                  </p>
                 </div>
-              </div>
+              </Reveal>
+
+              <Reveal delay={0.06} className="flex min-h-[240px] flex-col justify-between rounded-lg border bg-card p-7 md:col-span-3">
+                <ul className="space-y-2 font-mono text-sm tabular">
+                  {[
+                    ["BTC", "67,412.08", "+1.8%"],
+                    ["ETH", "3,104.55", "+2.4%"],
+                    ["SOL", "151.92", "-0.7%"],
+                  ].map(([sym, price, chg]) => (
+                    <li key={sym} className="flex items-center justify-between">
+                      <span>{sym}</span>
+                      <span className="text-muted-foreground">{price}</span>
+                      <span className={chg.startsWith("-") ? "text-loss" : "text-gain"}>{chg}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div>
+                  <h3 className="mt-8 text-xl font-semibold tracking-tight">Market context</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                    Prices and trends next to your positions, so you can see why a bot acted. Prices shown are samples.
+                  </p>
+                </div>
+              </Reveal>
+
+              <Reveal className="flex min-h-[220px] flex-col justify-between rounded-lg bg-secondary p-7 md:col-span-4">
+                <LockKeyhole className="h-7 w-7 text-brand-ink" strokeWidth={1.5} />
+                <div className="max-w-lg">
+                  <h3 className="text-xl font-semibold tracking-tight">Security first</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                    Your keys stay in your wallet. Exchange API secrets are stored encrypted and never shown again.
+                  </p>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.06} className="flex min-h-[220px] flex-col justify-between rounded-lg border bg-card p-7 md:col-span-2">
+                <code className="block rounded-sm bg-secondary px-3 py-2 font-mono text-[13px]">GET /v1/bots</code>
+                <div>
+                  <h3 className="text-xl font-semibold tracking-tight">API access</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                    Pull bots, trades, and balances into your own tools.
+                  </p>
+                </div>
+              </Reveal>
             </div>
           </div>
         </section>
 
-        {/* Features Section */}
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">Features</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Everything You Need to <span className="gradient-text">Trade Smarter</span>
-                </h2>
-                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  Our platform combines powerful trading tools with an intuitive interface to help you maximize your
-                  crypto investments.
-                </p>
-              </div>
+        {/* How it works */}
+        <section id="how-it-works" className="scroll-mt-16 border-t bg-secondary/30 py-24 md:py-32">
+          <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.2fr] lg:gap-24 lg:px-8">
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <SectionHeading
+                title="From wallet to running bot in three moves."
+                body="No servers to manage. Tessera hosts the bot and keeps the record."
+              />
             </div>
-            <div className="grid grid-cols-1 gap-6 mt-12 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="border-none shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader>
-                  <div className="p-2 w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                    <Wallet className="h-8 w-8 text-primary" />
+            <ol className="grid gap-4">
+              {steps.map((step, i) => (
+                <Reveal as="li" key={step.title} delay={i * 0.06} className="flex gap-5 rounded-lg border bg-background p-6 md:p-8">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-brand text-brand-foreground">
+                    <step.icon className="h-5 w-5" strokeWidth={1.75} />
+                  </span>
+                  <div>
+                    <h3 className="text-xl font-semibold tracking-tight">{step.title}</h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">{step.body}</p>
                   </div>
-                  <CardTitle>Wallet Integration</CardTitle>
-                  <CardDescription>Connect with MetaMask, WalletConnect, or use Google Authentication</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>
-                    Securely manage your assets with our seamless wallet integration. Monitor balances and transactions
-                    in real-time.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Link href="#" className="text-primary flex items-center text-sm">
-                    Learn more <ChevronRight className="h-4 w-4 ml-1" />
-                  </Link>
-                </CardFooter>
-              </Card>
-              <Card className="border-none shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader>
-                  <div className="p-2 w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                    <Bot className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Trading Bots</CardTitle>
-                  <CardDescription>Deploy and manage QuantConnect algorithms</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>
-                    Configure trading pairs, risk parameters, and operational settings with our intuitive interface.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Link href="#" className="text-primary flex items-center text-sm">
-                    Learn more <ChevronRight className="h-4 w-4 ml-1" />
-                  </Link>
-                </CardFooter>
-              </Card>
-              <Card className="border-none shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader>
-                  <div className="p-2 w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                    <LineChart className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Advanced Analytics</CardTitle>
-                  <CardDescription>Track performance with detailed metrics</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Visualize profits, losses, ROI, and other key metrics to optimize your trading strategies.</p>
-                </CardContent>
-                <CardFooter>
-                  <Link href="#" className="text-primary flex items-center text-sm">
-                    Learn more <ChevronRight className="h-4 w-4 ml-1" />
-                  </Link>
-                </CardFooter>
-              </Card>
-              <Card className="border-none shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader>
-                  <div className="p-2 w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                    <TrendingUp className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Market Insights</CardTitle>
-                  <CardDescription>Real-time data and market analysis</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>
-                    Stay informed with real-time market data, trends, and insights to make better trading decisions.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Link href="#" className="text-primary flex items-center text-sm">
-                    Learn more <ChevronRight className="h-4 w-4 ml-1" />
-                  </Link>
-                </CardFooter>
-              </Card>
-              <Card className="border-none shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader>
-                  <div className="p-2 w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                    <Shield className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Security First</CardTitle>
-                  <CardDescription>Enterprise-grade security protocols</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Your assets and data are protected with industry-leading security measures and encryption.</p>
-                </CardContent>
-                <CardFooter>
-                  <Link href="#" className="text-primary flex items-center text-sm">
-                    Learn more <ChevronRight className="h-4 w-4 ml-1" />
-                  </Link>
-                </CardFooter>
-              </Card>
-              <Card className="border-none shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader>
-                  <div className="p-2 w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                    <Code className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>API Access</CardTitle>
-                  <CardDescription>Integrate with your existing systems</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Connect InfluxLabs with your existing tools and systems through our comprehensive API.</p>
-                </CardContent>
-                <CardFooter>
-                  <Link href="#" className="text-primary flex items-center text-sm">
-                    Learn more <ChevronRight className="h-4 w-4 ml-1" />
-                  </Link>
-                </CardFooter>
-              </Card>
-            </div>
+                </Reveal>
+              ))}
+            </ol>
           </div>
         </section>
 
-        {/* How It Works Section */}
-        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">How It Works</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Start Trading in <span className="gradient-text">Three Simple Steps</span>
+        {/* Product */}
+        <section className="py-24 md:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-semibold leading-[1.08] tracking-tight md:text-[2.75rem]">
+                Every bot and balance on one screen.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1} className="mt-14">
+              <div className="overflow-hidden rounded-lg border bg-card p-1.5 shadow-[0_40px_80px_-40px_hsl(240_10%_6%/0.45)]">
+                <Image
+                  src="/product/dashboard-light.png"
+                  alt="Tessera dashboard showing portfolio value, recent trades, wallet balance, and running bots"
+                  width={2560}
+                  height={1600}
+                  className="rounded-md dark:hidden"
+                />
+                <Image
+                  src="/product/dashboard-dark.png"
+                  alt="Tessera dashboard showing portfolio value, recent trades, wallet balance, and running bots"
+                  width={2560}
+                  height={1600}
+                  className="hidden rounded-md dark:block"
+                />
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* Strategy explorer */}
+        <section id="strategies" className="scroll-mt-16 border-t bg-secondary/30 py-24 md:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal>
+              <SectionHeading
+                eyebrow="Strategies"
+                title="Pick a strategy. Watch it work."
+                body="Compare each algorithm against simply holding, over the same twelve months of sample data."
+              />
+            </Reveal>
+            <Reveal delay={0.08} className="mt-14">
+              <StrategyExplorer />
+            </Reveal>
+          </div>
+        </section>
+
+
+        {/* Closing call to action */}
+        <section className="py-24 md:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal className="tile-grid relative overflow-hidden rounded-lg border p-8 md:p-16">
+              <div className="grid items-end gap-10 md:grid-cols-[1.5fr_auto]">
+                <h2 className="max-w-2xl text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
+                  Put your first strategy to work today.
                 </h2>
-                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  Our platform makes algorithmic trading accessible to everyone, regardless of technical expertise.
-                </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 gap-8 mt-12 md:grid-cols-3">
-              <div className="flex flex-col items-center text-center">
-                <div className="relative mb-6">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-primary-foreground text-xl font-bold">
-                    1
-                  </div>
-                  <div className="absolute top-0 right-0 -mr-2 -mt-2 w-6 h-6 rounded-full bg-background flex items-center justify-center">
-                    <Wallet className="h-3 w-3 text-primary" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">Connect Your Wallet</h3>
-                <p className="text-muted-foreground">
-                  Securely connect your crypto wallet to our platform using MetaMask, WalletConnect, or create an
-                  account with Google.
-                </p>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="relative mb-6">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-primary-foreground text-xl font-bold">
-                    2
-                  </div>
-                  <div className="absolute top-0 right-0 -mr-2 -mt-2 w-6 h-6 rounded-full bg-background flex items-center justify-center">
-                    <Bot className="h-3 w-3 text-primary" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">Choose Your Strategy</h3>
-                <p className="text-muted-foreground">
-                  Select from our library of pre-built QuantConnect algorithms or customize your own trading strategy.
-                </p>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="relative mb-6">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-primary-foreground text-xl font-bold">
-                    3
-                  </div>
-                  <div className="absolute top-0 right-0 -mr-2 -mt-2 w-6 h-6 rounded-full bg-background flex items-center justify-center">
-                    <Zap className="h-3 w-3 text-primary" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">Launch & Monitor</h3>
-                <p className="text-muted-foreground">
-                  Deploy your trading bot with one click and monitor its performance in real-time through our intuitive
-                  dashboard.
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-center mt-12">
-              <Link href="/register">
-                <Button size="lg" className="gradient-bg hover:opacity-90 transition-opacity">
-                  Get Started Now
+                <Button variant="brand" size="lg" asChild>
+                  <Link href="/login">
+                    Start trading
+                    <ArrowRight />
+                  </Link>
                 </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
-        <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">Testimonials</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Trusted by <span className="gradient-text">Traders Worldwide</span>
-                </h2>
-                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  See what our users have to say about their experience with InfluxLabs.
-                </p>
               </div>
-            </div>
-            <div className="grid grid-cols-1 gap-6 mt-12 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="border-none shadow-lg">
-                <CardHeader>
-                  <div className="flex items-center gap-2 mb-2">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <CardTitle className="text-lg">"Revolutionized my trading strategy"</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    "InfluxLabs has completely transformed how I approach crypto trading. The automated bots have
-                    consistently outperformed my manual trading, and the analytics help me understand why."
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <span className="text-primary font-medium">JD</span>
-                    </div>
-                    <div>
-                      <p className="font-medium">John Doe</p>
-                      <p className="text-sm text-muted-foreground">Crypto Trader</p>
-                    </div>
-                  </div>
-                </CardFooter>
-              </Card>
-              <Card className="border-none shadow-lg">
-                <CardHeader>
-                  <div className="flex items-center gap-2 mb-2">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <CardTitle className="text-lg">"Finally, trading that fits my schedule"</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    "As a full-time professional, I never had time to actively trade. InfluxLabs's automated bots execute
-                    my strategies 24/7, and I just check in when I have time. Game changer!"
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <span className="text-primary font-medium">JS</span>
-                    </div>
-                    <div>
-                      <p className="font-medium">Jane Smith</p>
-                      <p className="text-sm text-muted-foreground">Software Engineer</p>
-                    </div>
-                  </div>
-                </CardFooter>
-              </Card>
-              <Card className="border-none shadow-lg">
-                <CardHeader>
-                  <div className="flex items-center gap-2 mb-2">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <CardTitle className="text-lg">"The analytics are incredible"</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    "What sets InfluxLabs apart is the depth of analytics. I can see exactly how my bots are performing
-                    and make data-driven decisions to optimize my strategies."
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <span className="text-primary font-medium">RJ</span>
-                    </div>
-                    <div>
-                      <p className="font-medium">Robert Johnson</p>
-                      <p className="text-sm text-muted-foreground">Data Analyst</p>
-                    </div>
-                  </div>
-                </CardFooter>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Pricing Section */}
-        <section id="pricing" className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">Pricing</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Simple, Transparent <span className="gradient-text">Pricing</span>
-                </h2>
-                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  Choose the plan that fits your trading needs. No hidden fees or surprises.
-                </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 gap-6 mt-12 md:grid-cols-3">
-              <Card className="border-none shadow-lg">
-                <CardHeader>
-                  <CardTitle>Starter</CardTitle>
-                  <div className="mt-4 flex items-baseline">
-                    <span className="text-3xl font-bold">$29</span>
-                    <span className="ml-1 text-muted-foreground">/month</span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {["2 Active Bots", "Basic Analytics", "Email Support", "Standard API Access"].map((feature) => (
-                      <li key={feature} className="flex items-center">
-                        <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full">Get Started</Button>
-                </CardFooter>
-              </Card>
-              <Card className="border-none shadow-xl relative">
-                <div className="absolute -top-4 left-0 right-0 mx-auto w-fit px-3 py-1 bg-primary text-primary-foreground text-sm font-medium rounded-full">
-                  Most Popular
-                </div>
-                <CardHeader>
-                  <CardTitle>Professional</CardTitle>
-                  <div className="mt-4 flex items-baseline">
-                    <span className="text-3xl font-bold">$79</span>
-                    <span className="ml-1 text-muted-foreground">/month</span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {[
-                      "5 Active Bots",
-                      "Advanced Analytics",
-                      "Priority Support",
-                      "Enhanced API Access",
-                      "Custom Strategies",
-                      "Performance Reports",
-                    ].map((feature) => (
-                      <li key={feature} className="flex items-center">
-                        <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full gradient-bg hover:opacity-90 transition-opacity">Get Started</Button>
-                </CardFooter>
-              </Card>
-              <Card className="border-none shadow-lg">
-                <CardHeader>
-                  <CardTitle>Enterprise</CardTitle>
-                  <div className="mt-4 flex items-baseline">
-                    <span className="text-3xl font-bold">$199</span>
-                    <span className="ml-1 text-muted-foreground">/month</span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {[
-                      "Unlimited Active Bots",
-                      "Premium Analytics",
-                      "24/7 Dedicated Support",
-                      "Full API Access",
-                      "Custom Strategies",
-                      "Performance Reports",
-                      "White-label Options",
-                      "Team Collaboration",
-                    ].map((feature) => (
-                      <li key={feature} className="flex items-center">
-                        <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full">Get Started</Button>
-                </CardFooter>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Ready to <span className="gradient-text">Revolutionize</span> Your Trading?
-                </h2>
-                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  Join thousands of traders who are already using InfluxLabs to automate their crypto trading strategies.
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                <Link href="/register">
-                  <Button size="lg" className="gradient-bg hover:opacity-90 transition-opacity">
-                    Get Started for Free
-                  </Button>
-                </Link>
-                <Link href="#features">
-                  <Button size="lg" variant="outline">
-                    Learn More
-                  </Button>
-                </Link>
-              </div>
-            </div>
+            </Reveal>
           </div>
         </section>
       </main>
 
-      <footer className="border-t py-12 md:py-16 lg:py-20">
-        <div className="container px-4 md:px-6">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
-            <div className="col-span-2 lg:col-span-2">
-              <div className="flex items-center gap-2 font-bold text-xl mb-4">
-                <Bot className="h-6 w-6 text-primary" />
-                <span>InfluxLabs</span>
-              </div>
-              <p className="text-muted-foreground mb-4 max-w-xs">
-                Empowering traders with algorithmic trading solutions for the cryptocurrency market.
-              </p>
-              <div className="flex gap-4">
-                <Link href="#" className="text-muted-foreground hover:text-primary">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                  </svg>
-                </Link>
-                <Link href="#" className="text-muted-foreground hover:text-primary">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                  </svg>
-                </Link>
-                <Link href="#" className="text-muted-foreground hover:text-primary">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                  </svg>
-                </Link>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-4">Product</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="#features" className="text-muted-foreground hover:text-primary">
-                    Features
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#pricing" className="text-muted-foreground hover:text-primary">
-                    Pricing
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    API
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    Documentation
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-4">Company</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    Careers
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-4">Legal</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    Terms
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    Privacy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    Cookies
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-muted-foreground hover:text-primary">
-                    Licenses
-                  </Link>
-                </li>
-              </ul>
-            </div>
+      <footer className="border-t">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr_1fr] lg:px-8">
+          <div>
+            <Logo />
+            <p className="mt-4 max-w-xs text-sm text-muted-foreground">
+              Automated crypto trading with QuantConnect strategies and wallet sign-in.
+            </p>
           </div>
-          <div className="mt-12 border-t pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">© 2025 InfluxLabs. All rights reserved.</p>
-            <p className="text-sm text-muted-foreground mt-4 md:mt-0">Made with ❤️ for crypto traders worldwide</p>
-          </div>
+          {[
+            { title: "Product", links: [["Features", "#features"], ["How it works", "#how-it-works"], ["Dashboard", "/dashboard"]] },
+            { title: "Company", links: [["About", "#"], ["Blog", "#"], ["Careers", "#"]] },
+            { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Cookies", "#"]] },
+          ].map((col) => (
+            <div key={col.title}>
+              <p className="text-sm font-medium">{col.title}</p>
+              <ul className="mt-4 space-y-3">
+                {col.links.map(([label, href]) => (
+                  <li key={label}>
+                    <Link href={href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="border-t">
+          <p className="mx-auto max-w-7xl px-4 py-6 text-sm text-muted-foreground sm:px-6 lg:px-8">
+            © 2026 Tessera. Trading crypto carries risk. Past performance does not guarantee future results.
+          </p>
         </div>
       </footer>
     </div>
   )
 }
-

@@ -1,111 +1,52 @@
+import { Gauge, Percent, TrendingUp } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { PerformanceChart } from "@/components/performance-chart"
-import { LineChart, BarChart, PieChart } from "lucide-react"
+import { EmptyPanel, PageHeader, StatCard } from "@/components/stat-card"
 
 export default function AnalyticsPage() {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Analytics</h1>
-      </div>
+    <div>
+      <PageHeader title="Analytics" description="Sample data. How your portfolio and bots are performing." />
 
-      <Tabs defaultValue="performance" className="space-y-4">
+      <Tabs defaultValue="performance">
         <TabsList>
           <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="bots">Bot Analytics</TabsTrigger>
-          <TabsTrigger value="markets">Market Data</TabsTrigger>
+          <TabsTrigger value="bots">Bots</TabsTrigger>
+          <TabsTrigger value="markets">Markets</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="performance" className="space-y-4">
+        <TabsContent value="performance" className="mt-4 space-y-4">
+          <div className="grid gap-4 sm:grid-cols-3">
+            <StatCard label="Total return" value="+24.5%" change="+5.2 pts vs last month" trend="up" icon={TrendingUp} />
+            <StatCard label="Win rate" value="68%" change="+3 pts vs last month" trend="up" icon={Percent} />
+            <StatCard label="Profit factor" value="1.85" change="+0.20 vs last month" trend="up" icon={Gauge} />
+          </div>
           <Card>
             <CardHeader>
-              <CardTitle>Portfolio Performance</CardTitle>
-              <CardDescription>Track your portfolio performance over time</CardDescription>
+              <CardTitle>Portfolio value</CardTitle>
+              <CardDescription>All bots combined</CardDescription>
             </CardHeader>
             <CardContent>
               <PerformanceChart />
             </CardContent>
           </Card>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Return</CardTitle>
-                <LineChart className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">+24.5%</div>
-                <p className="text-xs text-muted-foreground">+5.2% from last month</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Win Rate</CardTitle>
-                <BarChart className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">68%</div>
-                <p className="text-xs text-muted-foreground">+3% from last month</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Profit Factor</CardTitle>
-                <PieChart className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">1.85</div>
-                <p className="text-xs text-muted-foreground">+0.2 from last month</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Advanced Analytics</CardTitle>
-              <CardDescription>Detailed performance metrics and trading insights</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px] flex items-center justify-center border-2 border-dashed rounded-lg">
-              <div className="text-center">
-                <p className="text-muted-foreground">Analytics iframe would be embedded here</p>
-                <p className="text-sm text-muted-foreground mt-2">External analytics provider integration</p>
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
 
-        <TabsContent value="bots" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Bot Performance</CardTitle>
-              <CardDescription>Compare the performance of your trading bots</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px] flex items-center justify-center border-2 border-dashed rounded-lg">
-              <div className="text-center">
-                <p className="text-muted-foreground">Bot analytics iframe would be embedded here</p>
-                <p className="text-sm text-muted-foreground mt-2">External analytics provider integration</p>
-              </div>
-            </CardContent>
-          </Card>
+        <TabsContent value="bots" className="mt-4">
+          <EmptyPanel
+            title="Bot comparison is not connected yet"
+            body="Per-bot analytics will appear here once an analytics provider is linked."
+          />
         </TabsContent>
 
-        <TabsContent value="markets" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Market Overview</CardTitle>
-              <CardDescription>Real-time market data and analysis</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px] flex items-center justify-center border-2 border-dashed rounded-lg">
-              <div className="text-center">
-                <p className="text-muted-foreground">Market data iframe would be embedded here</p>
-                <p className="text-sm text-muted-foreground mt-2">External market data provider integration</p>
-              </div>
-            </CardContent>
-          </Card>
+        <TabsContent value="markets" className="mt-4">
+          <EmptyPanel
+            title="Market data is not connected yet"
+            body="Live prices and depth will appear here once a market data provider is linked."
+          />
         </TabsContent>
       </Tabs>
     </div>
   )
 }
-

@@ -9,9 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { toast } from "sonner"
+import { useWallet } from "@/components/wallet-provider"
+import { shortAddress } from "@/components/user-nav"
+import { PageHeader } from "@/components/stat-card"
 
 export default function SettingsPage() {
   const [isLoading, setIsLoading] = useState(false)
+  const { address, email, walletName, isGuest, isConnecting, connectWallet, disconnectWallet } = useWallet()
 
   const handleSave = () => {
     setIsLoading(true)
@@ -24,12 +28,10 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-      </div>
+    <div>
+      <PageHeader title="Settings" description="Account, trading defaults, notifications, and API keys." />
 
-      <Tabs defaultValue="account" className="space-y-4">
+      <Tabs defaultValue="account" className="max-w-3xl space-y-4">
         <TabsList>
           <TabsTrigger value="account">Account</TabsTrigger>
           <TabsTrigger value="trading">Trading</TabsTrigger>
@@ -46,16 +48,16 @@ export default function SettingsPage() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" defaultValue="John Doe" />
+                <Input id="name" defaultValue={isGuest ? "Guest" : ""} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" defaultValue="john.doe@example.com" />
+                <Input id="email" type="email" defaultValue={email ?? ""} />
               </div>
             </CardContent>
             <CardFooter>
               <Button onClick={handleSave} disabled={isLoading}>
-                {isLoading ? "Saving..." : "Save Changes"}
+                {isLoading ? "Saving..." : "Save changes"}
               </Button>
             </CardFooter>
           </Card>
@@ -66,17 +68,24 @@ export default function SettingsPage() {
               <CardDescription>Manage your connected wallets</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">MetaMask</p>
-                  <p className="text-sm text-muted-foreground">0x1a2b...3c4d</p>
+              {address ? (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">{isGuest ? "Sample wallet" : (walletName ?? "Wallet")}</p>
+                    <p className="font-mono text-sm text-muted-foreground">{shortAddress(address)}</p>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={() => disconnectWallet()}>
+                    Disconnect
+                  </Button>
                 </div>
-                <Button variant="outline" size="sm">
-                  Disconnect
-                </Button>
-              </div>
-              <Separator />
-              <Button variant="outline">Connect Another Wallet</Button>
+              ) : (
+                <div className="flex items-center justify-between gap-4">
+                  <p className="text-sm text-muted-foreground">No wallet is connected.</p>
+                  <Button variant="outline" size="sm" onClick={() => connectWallet()} disabled={isConnecting}>
+                    Connect a wallet
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -92,7 +101,7 @@ export default function SettingsPage() {
             </CardContent>
             <CardFooter>
               <Button variant="destructive" onClick={() => toast.error("This feature is disabled in the demo")}>
-                Delete Account
+                Delete account
               </Button>
             </CardFooter>
           </Card>
@@ -135,7 +144,7 @@ export default function SettingsPage() {
             </CardContent>
             <CardFooter>
               <Button onClick={handleSave} disabled={isLoading}>
-                {isLoading ? "Saving..." : "Save Changes"}
+                {isLoading ? "Saving..." : "Save changes"}
               </Button>
             </CardFooter>
           </Card>
@@ -174,7 +183,7 @@ export default function SettingsPage() {
             </CardContent>
             <CardFooter>
               <Button onClick={handleSave} disabled={isLoading}>
-                {isLoading ? "Saving..." : "Save Changes"}
+                {isLoading ? "Saving..." : "Save changes"}
               </Button>
             </CardFooter>
           </Card>
@@ -189,16 +198,16 @@ export default function SettingsPage() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="quantconnect-api">QuantConnect API Key</Label>
-                <Input id="quantconnect-api" type="password" defaultValue="••••••••••••••••" />
+                <Input id="quantconnect-api" type="password" placeholder="Not set" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="quantconnect-secret">QuantConnect Secret Key</Label>
-                <Input id="quantconnect-secret" type="password" defaultValue="••••••••••••••••" />
+                <Input id="quantconnect-secret" type="password" placeholder="Not set" />
               </div>
             </CardContent>
             <CardFooter>
               <Button onClick={handleSave} disabled={isLoading}>
-                {isLoading ? "Saving..." : "Save Changes"}
+                {isLoading ? "Saving..." : "Save changes"}
               </Button>
             </CardFooter>
           </Card>

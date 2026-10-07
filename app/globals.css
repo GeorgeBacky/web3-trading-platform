@@ -2,93 +2,118 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Tessera design tokens.
+  One neutral family (cool zinc), one accent (signal lime).
+  Radius scale: buttons/inputs = md (10px), cards/panels = lg (12px), tiles = sm (8px).
+  --brand is used for fills (buttons, highlights); --brand-ink is the readable
+  text/line version of the accent for the current theme.
+*/
 @layer base {
   :root {
-    --background: 30 33% 98%;
-    --foreground: 30 10% 10%;
+    --background: 240 8% 97%;
+    --foreground: 240 10% 6%;
 
-    --card: 30 33% 98%;
-    --card-foreground: 30 10% 10%;
+    --card: 240 10% 99%;
+    --card-foreground: 240 10% 6%;
 
-    --popover: 30 33% 98%;
-    --popover-foreground: 30 10% 10%;
+    --popover: 240 10% 99%;
+    --popover-foreground: 240 10% 6%;
 
-    --primary: 25 95% 53%;
-    --primary-foreground: 30 33% 98%;
+    --primary: 240 10% 8%;
+    --primary-foreground: 240 8% 97%;
 
-    --secondary: 30 20% 92%;
-    --secondary-foreground: 30 10% 10%;
+    --brand: 76 82% 52%;
+    --brand-foreground: 240 10% 6%;
+    --brand-ink: 82 72% 26%;
 
-    --muted: 30 20% 92%;
-    --muted-foreground: 30 10% 40%;
+    --secondary: 240 6% 92%;
+    --secondary-foreground: 240 10% 8%;
 
-    --accent: 30 20% 92%;
-    --accent-foreground: 30 10% 10%;
+    --muted: 240 6% 92%;
+    --muted-foreground: 240 4% 36%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --accent: 240 6% 92%;
+    --accent-foreground: 240 10% 8%;
 
-    --border: 30 20% 88%;
-    --input: 30 20% 88%;
-    --ring: 25 95% 53%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 240 8% 97%;
 
-    --radius: 0.625rem;
+    --gain: 152 64% 30%;
+    --loss: 0 72% 46%;
 
-    --sidebar-background: 30 33% 98%;
-    --sidebar-foreground: 30 10% 10%;
-    --sidebar-border: 30 20% 88%;
-    --sidebar-accent: 30 20% 92%;
-    --sidebar-accent-foreground: 30 10% 10%;
-    --sidebar-ring: 25 95% 53%;
+    --border: 240 6% 86%;
+    --input: 240 6% 82%;
+    --ring: 82 72% 30%;
 
-    --chart-1: 25 95% 53%;
-    --chart-2: 35 90% 45%;
-    --chart-3: 15 90% 45%;
-    --chart-4: 45 90% 45%;
-    --chart-5: 5 90% 45%;
+    --radius: 0.75rem;
+
+    --sidebar-background: 240 8% 95%;
+    --sidebar-foreground: 240 10% 8%;
+    --sidebar-border: 240 6% 86%;
+    --sidebar-accent: 240 6% 90%;
+    --sidebar-accent-foreground: 240 10% 8%;
+    --sidebar-ring: 82 72% 30%;
+
+    --chart-1: 82 72% 30%;
+    --chart-2: 240 5% 46%;
+    --chart-3: 152 64% 30%;
+    --chart-4: 240 5% 66%;
+    --chart-5: 0 72% 46%;
+
+    --grid-line: 240 6% 88%;
   }
 
   .dark {
-    --background: 30 15% 10%;
-    --foreground: 30 10% 95%;
+    --background: 240 9% 5%;
+    --foreground: 240 6% 94%;
 
-    --card: 30 15% 10%;
-    --card-foreground: 30 10% 95%;
+    --card: 240 7% 8%;
+    --card-foreground: 240 6% 94%;
 
-    --popover: 30 15% 10%;
-    --popover-foreground: 30 10% 95%;
+    --popover: 240 7% 9%;
+    --popover-foreground: 240 6% 94%;
 
-    --primary: 25 95% 53%;
-    --primary-foreground: 30 10% 95%;
+    --primary: 76 88% 58%;
+    --primary-foreground: 240 10% 6%;
 
-    --secondary: 30 15% 20%;
-    --secondary-foreground: 30 10% 95%;
+    --brand: 76 88% 58%;
+    --brand-foreground: 240 10% 6%;
+    --brand-ink: 76 88% 62%;
 
-    --muted: 30 15% 20%;
-    --muted-foreground: 30 10% 70%;
+    --secondary: 240 6% 13%;
+    --secondary-foreground: 240 6% 94%;
 
-    --accent: 30 15% 20%;
-    --accent-foreground: 30 10% 95%;
+    --muted: 240 6% 12%;
+    --muted-foreground: 240 5% 64%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --accent: 240 6% 14%;
+    --accent-foreground: 240 6% 94%;
 
-    --border: 30 15% 25%;
-    --input: 30 15% 25%;
-    --ring: 25 95% 53%;
+    --destructive: 0 70% 56%;
+    --destructive-foreground: 240 6% 96%;
 
-    --sidebar-background: 30 15% 12%;
-    --sidebar-foreground: 30 10% 95%;
-    --sidebar-border: 30 15% 25%;
-    --sidebar-accent: 30 15% 20%;
-    --sidebar-accent-foreground: 30 10% 95%;
-    --sidebar-ring: 25 95% 53%;
+    --gain: 152 58% 52%;
+    --loss: 0 82% 66%;
 
-    --chart-1: 25 95% 53%;
-    --chart-2: 35 90% 65%;
-    --chart-3: 15 90% 65%;
-    --chart-4: 45 90% 65%;
-    --chart-5: 5 90% 65%;
+    --border: 240 6% 16%;
+    --input: 240 6% 20%;
+    --ring: 76 88% 58%;
+
+    --sidebar-background: 240 9% 6%;
+    --sidebar-foreground: 240 6% 94%;
+    --sidebar-border: 240 6% 14%;
+    --sidebar-accent: 240 6% 12%;
+    --sidebar-accent-foreground: 240 6% 94%;
+    --sidebar-ring: 76 88% 58%;
+
+    --chart-1: 76 88% 58%;
+    --chart-2: 240 5% 60%;
+    --chart-3: 152 58% 52%;
+    --chart-4: 240 5% 40%;
+    --chart-5: 0 82% 66%;
+
+    --grid-line: 240 6% 12%;
   }
 }
 
@@ -96,46 +121,55 @@
   * {
     @apply border-border;
   }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv11";
+  }
+  ::selection {
+    background: hsl(var(--brand) / 0.35);
   }
 }
 
-.gradient-text {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FF7A00] to-[#FF9E2D];
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Faint tile grid used behind brand moments. Fixed size, no animation. */
+  .tile-grid {
+    background-image:
+      linear-gradient(hsl(var(--grid-line)) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--grid-line)) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Monochrome logo rendered from an SVG url via mask, so it follows currentColor in both themes. */
+  .mask-logo {
+    background-color: currentColor;
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+  }
 }
 
-.gradient-bg {
-  @apply bg-gradient-to-br from-[#FF7A00] to-[#FF9E2D];
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
-.gradient-border {
-  position: relative;
-  border-radius: var(--radius);
-  background-clip: padding-box;
-  border: 1px solid transparent;
+@media (prefers-reduced-motion: no-preference) {
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+  .group:hover .animate-marquee {
+    animation-play-state: paused;
+  }
 }
-
-.gradient-border::after {
-  content: "";
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  bottom: -1px;
-  left: -1px;
-  z-index: -1;
-  border-radius: inherit;
-  background: linear-gradient(to right, #ff7a00, #ff9e2d);
-}
-
-.hero-pattern {
-  background-color: rgba(255, 122, 0, 0.05);
-  background-image: radial-gradient(rgba(255, 122, 0, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-.dark .hero-pattern {
-  background-color: rgba(255, 122, 0, 0.03);
-  background-image: radial-gradient(rgba(255, 122, 0, 0.15) 1px, transparent 1px);
-}
-
