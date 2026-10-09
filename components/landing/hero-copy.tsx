@@ -12,7 +12,7 @@ const ease = [0.16, 1, 0.3, 1] as const
 // TODO: replace with the real token contract address
 const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000"
 
-function ContractAddressButton() {
+function ContractAddress() {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -32,19 +32,22 @@ function ContractAddressButton() {
   }
 
   return (
-    <Button
-      variant="outline"
-      size="lg"
-      onClick={copy}
-      aria-label={`Copy contract address ${CONTRACT_ADDRESS}`}
-      title={CONTRACT_ADDRESS}
-    >
-      <span className="text-muted-foreground">CA:</span>
-      <span className="font-mono">
-        {CONTRACT_ADDRESS.slice(0, 6)}…{CONTRACT_ADDRESS.slice(-4)}
+    <div className="inline-flex max-w-full items-center gap-3 rounded-lg border bg-background/80 py-1.5 pl-1.5 pr-1.5 backdrop-blur">
+      <span className="shrink-0 rounded-md bg-brand px-2 py-1 text-xs font-semibold tracking-wide text-brand-foreground">
+        CA
       </span>
-      {copied ? <Check className="text-gain" /> : <Copy />}
-    </Button>
+      <code className="min-w-0 break-all font-mono text-[13px] text-foreground/90 sm:text-sm">{CONTRACT_ADDRESS}</code>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={copy}
+        aria-label="Copy contract address"
+        title="Copy contract address"
+        className="h-8 w-8 shrink-0"
+      >
+        {copied ? <Check className="text-gain" /> : <Copy />}
+      </Button>
+    </div>
   )
 }
 
@@ -76,7 +79,9 @@ export function HeroCopy() {
         <Button variant="outline" size="lg" asChild>
           <Link href="#how-it-works">See how it works</Link>
         </Button>
-        <ContractAddressButton />
+      </motion.div>
+      <motion.div {...item(0.24)} className="mt-6">
+        <ContractAddress />
       </motion.div>
     </div>
   )
