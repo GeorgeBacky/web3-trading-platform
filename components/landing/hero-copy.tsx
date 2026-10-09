@@ -1,11 +1,52 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Check, Copy } from "lucide-react"
 import { motion } from "motion/react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 
 const ease = [0.16, 1, 0.3, 1] as const
+
+// TODO: replace with the real token contract address
+const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000"
+
+function ContractAddressButton() {
+  const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    if (!copied) return
+    const t = setTimeout(() => setCopied(false), 2000)
+    return () => clearTimeout(t)
+  }, [copied])
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTRACT_ADDRESS)
+      setCopied(true)
+      toast.success("Contract address copied")
+    } catch {
+      toast.error("Could not copy the address")
+    }
+  }
+
+  return (
+    <Button
+      variant="outline"
+      size="lg"
+      onClick={copy}
+      aria-label={`Copy contract address ${CONTRACT_ADDRESS}`}
+      title={CONTRACT_ADDRESS}
+    >
+      <span className="text-muted-foreground">CA:</span>
+      <span className="font-mono">
+        {CONTRACT_ADDRESS.slice(0, 6)}…{CONTRACT_ADDRESS.slice(-4)}
+      </span>
+      {copied ? <Check className="text-gain" /> : <Copy />}
+    </Button>
+  )
+}
 
 export function HeroCopy() {
   const item = (delay: number) => ({
@@ -35,6 +76,7 @@ export function HeroCopy() {
         <Button variant="outline" size="lg" asChild>
           <Link href="#how-it-works">See how it works</Link>
         </Button>
+        <ContractAddressButton />
       </motion.div>
     </div>
   )
